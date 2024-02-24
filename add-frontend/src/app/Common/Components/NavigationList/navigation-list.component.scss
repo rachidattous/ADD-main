@@ -1,0 +1,12 @@
+
+.item {
+    color: black;
+    background-color: whitesmoke;
+    border-radius: 5px;
+
+    &:hover {
+        color: white;
+        background-color: #0e1e2b;
+        border: .5px solid white;
+    }
+}

@@ -1,0 +1,24 @@
+<form [formGroup]="evaluationForm" novalidate>
+    <h2 mat-dialog-title>Evaluation</h2>
+    <mat-dialog-content class="content">
+        <mat-radio-group class="form-field" formControlName="validationType">
+            <mat-radio-button class="radio-elem" value="Accepted">Accept</mat-radio-button>
+            <mat-radio-button class="radio-elem" value="Refused">Refuse</mat-radio-button>
+        </mat-radio-group>
+        <br>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Reason</mat-label>
+            <textarea matInput rows="5" formControlName="comment"></textarea>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+        </button>
+        <button mat-raised-button [disabled]="!evaluationForm.valid" color="primary" (click)="evaluate()">
+            <mat-icon>assignment_turned_in</mat-icon>
+            Evaluate
+        </button>
+    </mat-dialog-actions>
+</form>

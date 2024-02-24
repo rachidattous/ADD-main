@@ -1,0 +1,11 @@
+
+.content {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    .textarea {
+        height: 100%;
+    }
+}

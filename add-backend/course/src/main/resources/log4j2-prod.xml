@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Extra logging related to initialization of Log4j.
+ Set to debug or trace if log4j initialization is failing. -->
+<Configuration status="warn" allowDynamicVariables="true">
+    <properties>
+        <property name="LOGS" value="${sys:logging.path:-./logs}" />
+        <property name="APP" value="${sys:spring.application.name:-course}" />
+        <property name="SOCKET" value="false" />
+        <!-- <Property name="defaultPattern">[%highlight{%-5level}] %d{DEFAULT} %c{1}.%M() -  %msg%n%throwable{short.lineNumber}</Property> -->
+        <Property name="defaultPattern">%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Property>
+        <Property name="logStashPattern">[%d{ISO8601}][%-5p][%-25c:%L]%notEmpty{[%X{pipeline.id}]}%notEmpty{[%X{plugin.id}]}  %m%n</Property>
+    </properties>
+    <Appenders>
+        <!-- Console appender configuration -->
+        <Console name="console" target="SYSTEM_OUT">
+            <!-- <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" /> -->
+            <PatternLayout pattern="${defaultPattern}" />
+        </Console>
+        <!-- filePattern="${LOGS}/spring-boot-logger-%d{yyyy-MM-dd}.log"-->
+        <RollingFile name="fileLogger" fileName="${LOGS}/${APP}.log" filePattern="${LOGS}/${APP}-%d{yyyy-MM-dd-HH-mm}-%i.log">
+            <!-- <PatternLayout pattern="%d [%t] %-5p {%F:%L} %x - %m%n" /> -->
+            <PatternLayout pattern="${defaultPattern}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="60" modulate="true" />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOGS}" maxDepth="10">
+                    <IfLastModified age="30m" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+
+        <Socket name="socket" host="${sys:logging.logstash.url:-localhost}" port="${sys:logging.logstash.port:-9999}" reconnectionDelayMillis="5000">
+            <PatternLayout pattern="${defaultPattern}" />
+        </Socket>
+
+    </Appenders>
+    <Loggers>
+        <!-- Root logger referring to console appender -->
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console" />
+            <appenderRef ref="fileLogger" />
+            <AppenderRef ref="socket" />
+        </Root>
+    </Loggers>
+</Configuration>

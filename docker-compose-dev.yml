@@ -1,0 +1,194 @@
+version: '3'
+
+services:
+
+    mysql-db:
+        container_name: mysql-db
+        image: mysql:5.7
+        # build:
+        #     context: ./add-backend/mysql
+        #     dockerfile: Dockerfile
+
+        environment:
+            MYSQL_ROOT_PASSWORD: rootroot
+            ##MYSQL_DATABASE: wordpress
+            # MYSQL_USER: wordpress
+            # MYSQL_PASSWORD: wordpress
+        volumes:
+            - ./volumes/mysql:/var/lib/mysql
+            - ./add-backend/mysql/init:/docker-entrypoint-initdb.d
+            - ./add-backend/mysql/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+        ports:
+            - 3306:3306
+        networks:
+            - add-network
+        restart: always
+
+    keycloak:
+        container_name: keycloak
+        # image: jboss/keycloak:14.0.0
+        image: quay.io/keycloak/keycloak:21.1.2
+        # build:
+        #     context: ./add-backend/keycloak
+        #     dockerfile: Dockerfile
+        environment:
+            DB_VENDOR: MYSQL
+            DB_ADDR: mysql-db
+            DB_DATABASE: keycloak
+            DB_USER: root
+            DB_PASSWORD: rootroot
+            KEYCLOAK_ADMIN: root
+            KEYCLOAK_ADMIN_PASSWORD: rootroot
+            proxy-address-forwarding: "true"
+            KC_HOSTNAM: 'keycloak'
+            KC_METRICS_ENABLED: 'true'
+            KC_FEATURES: token-exchange
+            KC_HTTP_ENABLED: 'true'
+            PROXY_ADDRESS_FORWARDING: 'true'
+            KC_HOSTNAME_STRICT_BACKCHANNEL: 'false'
+            # KEYCLOAK_IMPORT: /tmp/realm-export.json
+            KEYCLOAK_PORT: 8180
+        volumes:
+            - ./add-backend/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+        ports:
+            - 8080:8080
+            - 8180:8180
+        hostname: keycloak
+            # command:
+            #     - "-Djboss.http.port=8180"
+        command: start-dev  --http-port=8180 --import-realm
+        depends_on:
+            - mysql-db
+        networks:
+            - add-network
+        restart: always
+
+    # minio:
+    #     container_name: minio
+    #     image: minio/minio
+    #     # build:
+    #     #     context: ./add-backend/minio
+    #     #     dockerfile: Dockerfile
+    #     ports:
+    #         - 9000:9000
+    #         - 9001:9001
+    #     volumes:
+    #         - ./volumes/minio:/data
+    #     environment:
+    #         MINIO_ROOT_USER: root
+    #         MINIO_ROOT_PASSWORD: rootroot
+    #     command: server --console-address ":9001" /data
+    #     networks:
+    #         - add-network
+    #     restart: always
+
+    # elasticsearch:
+    #     image: elasticsearch:7.12.1
+    #     container_name: elasticsearch
+    #     # build:
+    #     #     context: ./add-backend/elasticsearch
+    #     #     dockerfile: Dockerfile
+    #     volumes:
+    #         - ./add-backend/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    #         - ./volumes/elasticsearch:/usr/share/elasticsearch/data
+    #     ports:
+    #         - "9200:9200"
+    #         - "9300:9300"
+    #     environment:
+    #         # ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    #         - discovery.type=single-node
+    #         - bootstrap.memory_lock=true
+    #         - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
+    #         - cluster.routing.allocation.disk.threshold_enabled=false
+    #     ulimits:
+    #         memlock:
+    #             soft: -1
+    #             hard: -1
+    #     networks:
+    #         - add-network
+    #     restart: always
+
+    # kibana:
+    #     image: kibana:7.12.1
+    #     # build:
+    #     #     context: ./add-backend/kibana
+    #     #     dockerfile: Dockerfile
+    #     container_name: kibana
+    #     volumes:
+    #         - ./add-backend/kibana/config/:/usr/share/kibana/config/
+    #         - ./volumes/kibana/:/usr/share/kibana/data
+    #     ports:
+    #         - "5601:5601"
+    #     depends_on:
+    #         - elasticsearch
+    #     networks:
+    #         - add-network
+    #     restart: always
+    # logstash:
+    #     image: logstash:7.12.1
+    #     # build:
+    #     #     context: ./add-backend/logstash
+    #     #     dockerfile: Dockerfile
+    #     container_name: logstash
+    #     command: -f /etc/logstash/conf.d/
+    #     volumes:
+    #         - ./add-backend/logstash/config/:/etc/logstash/conf.d/
+    #     ports:
+    #         - 5000:5000
+    #         - 5044:5044
+    #         - 9999:9999
+    #         - 9600:9600
+    #     environment:
+    #         LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    #     depends_on:
+    #         - elasticsearch
+    #     networks:
+    #         - add-network
+    #     restart: always
+
+networks:
+    add-network:
+        driver: bridge
+    # eureka:
+    #     container_name: eureka
+    #     build:
+    #         context: ./add-backend/eureka-discovery
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 8761:8761
+    #     networks:
+    #         - add-network
+
+    #     environment:
+    #         PROFILE: prod
+    #         LOG_PATH: /app/logs
+    #         LOGSTASH_HOST: logstash
+    #         LOGSTASH_PORT: 9999
+    #         SBADMIN_URL: http://sbadmin:9090
+    #     volumes:
+    #         - ./volumes/logs/eureka:/app/logs
+    #     restart: always
+
+    # gateway:
+    #     container_name: gateway
+    #     build:
+    #         context: ./add-backend/gateway
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - 80:80
+    #     networks:
+    #         - add-network
+    #     depends_on:
+    #         - eureka
+
+    #     environment:
+    #         PROFILE: prod
+    #         EUREKA_DISCOVERY: http://eureka:8761
+    #         LOG_PATH: /app/logs
+    #         LOGSTASH_HOST: logstash
+    #         LOGSTASH_PORT: 9999
+    #         SBADMIN_URL: http://sbadmin:9090
+    #     volumes:
+    #         - ./volumes/logs/gateway:/app/logs
+    #     restart: always
+

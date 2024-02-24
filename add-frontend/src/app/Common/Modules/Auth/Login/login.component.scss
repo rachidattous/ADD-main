@@ -1,0 +1,93 @@
+@use '../../../../../styles.scss';
+
+
+.container {
+    height: 100%;
+    @include styles.center;
+    background: radial-gradient(circle at 18.7% 37.8%, rgb(250, 250, 250) 0%, rgb(225, 234, 238) 90%);
+}
+
+
+form {
+    width: 400px;
+    height: 70%;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+    .form-header {
+        width: 100%;
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+
+        .logo-wrapper {
+            background-color: aqua;
+            @include styles.center;
+            width: 200px;
+            .logo {
+                width: 200px;
+            }
+        }
+
+        .label-wrapper {
+            height: 20%;
+            @include styles.center;
+        }
+    }
+
+    .form-inputs {
+        width: 100%;
+        height: 45%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 10px;
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        mat-form-field + mat-form-field {
+            margin-top: 10px;
+        }
+
+    }
+
+    .form-submit {
+        width: 100%;
+        height: 10%;
+        @include styles.center;
+
+        button {
+            width: 100%;
+            height: 80%;
+            margin: 0px 25% 0px;
+        }
+
+    }
+
+    .form-help {
+        width: 100%;
+        height: 15%;
+        @include styles.center;     
+    }
+
+}
+
+@media screen and (max-width : 600px){
+    form {
+        margin : 0px 10% 0px;
+    }
+}
+
+@media screen and (max-height : 800px){
+    form {
+        height: 80%;
+    }
+}

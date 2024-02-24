@@ -1,0 +1,45 @@
+<div class="container"> 
+    <form [formGroup]="loginForm" novalidate>
+        <!-- LABEL SECTION -->
+        <div class="form-header">
+            <div class="logo-wrapper">
+                <img class="logo" src="assets/add.png" />
+            </div>
+            <div class="label-wrapper">
+                <h3>Welcome to ADD E-Learning</h3>
+            </div>
+        </div>
+
+        <!-- INPUTS SECTION -->
+        <div class="form-inputs">
+            <!-- EMAIL -->
+            <mat-form-field appearance="outline">
+                <mat-label>username</mat-label>
+                <input type="text" formControlName="username" matInput />
+                <mat-icon matSuffix>person</mat-icon>
+                <mat-error *ngIf="check('username','required')" >username required</mat-error>
+            </mat-form-field>
+            <!-- PASSWORD -->
+            <mat-form-field appearance="outline">
+                <mat-label>password</mat-label>
+                <input type={{fieldType}} formControlName="password" matInput placeholder="12345678" />
+                <mat-icon matSuffix (click)="toggleVisibility()">{{passwordIcon()}}</mat-icon>
+                <mat-error *ngIf="check('password','required')" >password required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- SUBMIT SECTION -->
+        <div class="form-submit">
+            <button mat-raised-button color="primary" [disabled]="loginForm.invalid" (click)="submit()">
+                Sign in
+                <mat-icon matSuffix>login</mat-icon>
+            </button>
+        </div>
+
+        <div class="form-help">
+            <a mat-button [routerLink]="RESET_PASSWORD">
+                Forget Password ?
+            </a>
+        </div>
+    </form> 
+</div>

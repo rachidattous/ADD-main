@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Test Spring boot project') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Build Jar') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Build Docker image') {
+            steps {
+                sh 'docker build -t 365583262659.dkr.ecr.eu-west-3.amazonaws.com/communication-repo:latest .'
+            }
+        }
+        stage('ECR Login') {
+            steps {
+                    sh 'aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 365583262659.dkr.ecr.eu-west-3.amazonaws.com'
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                sh 'docker push 365583262659.dkr.ecr.eu-west-3.amazonaws.com/communication-repo:latest'
+            }
+        }
+        
+        stage('Deploy to EKS') {
+            steps {
+                sh 'kubectl apply -f k8s/deployemen-service.yaml'
+            }
+        }
+    }
+}

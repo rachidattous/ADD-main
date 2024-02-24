@@ -1,0 +1,59 @@
+
+
+spring:
+
+  profiles : 
+    active : ${PROFILE:dev} 
+  main :
+    web-application-type: reactive
+    allow-bean-definition-overriding : true
+  application:
+    name: GATEWAY
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin 
+        # - AddResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowCredentials: false
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            exposedHeaders : "*"
+
+      discovery:
+        locator:
+          enabled: true
+          # lowerCaseServiceId: true
+      # routes:
+
+      # - id: AUTH
+      #   uri: lb://AUTH
+      #   predicates:
+      #     - Path=/api/auth/**
+      # - id: SBADMIN
+      #   uri: lb://SBADMIN
+      #   predicates:
+      #     - Path=/api/sbAdmin/**
+      # - id: EUREKA
+      #   uri: lb://EUREKA
+      #   predicates:
+      #     - Path=/api/eureka/**
+      # - id: FILE
+      #   uri: lb://FILE
+      #   predicates:
+      #     - Path=/api/file/**
+      # - id: SEARCH
+      #   uri: lb://SEARCH
+      #   predicates:
+      #     - Path=/api/search/**
+        
+         
+server :
+  port : 80
+
+eureka:
+  instance:
+    preferIpAddress: true

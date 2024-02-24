@@ -1,0 +1,9 @@
+
+<mat-expansion-panel hideToggle={{menuSection.hideToggle}}>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{menuSection.title}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-navigation-list [items]="menuSection.items"></app-navigation-list>
+</mat-expansion-panel>  

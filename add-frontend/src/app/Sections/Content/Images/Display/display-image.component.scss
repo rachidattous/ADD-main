@@ -1,0 +1,14 @@
+
+.content {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}

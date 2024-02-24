@@ -1,0 +1,80 @@
+@use '../../../../styles.scss';
+
+.container {
+    height: 80px;
+    width: 100%;
+    background-color: styles.$COLOR;
+    color: black;
+    padding: 5px;
+    border-bottom: 1px #b7b7b7 solid;
+
+    box-sizing: border-box;
+    @include styles.center;
+
+    .toggle-section{
+        height: 100%;
+        width: 80px;
+        @include styles.center;
+        // border : 1px solid white;
+    }
+
+    .logo-section{
+        height: 100%;
+        width: 160px;
+        @include styles.center;
+        // border : 1px solid white;
+
+        img {
+            width: 100%;
+            height: 100%;
+            @include styles.rounded;
+        }
+    }
+
+    .empty-section{
+        height: 100%;
+        @include styles.center;
+        // border : 1px solid white;
+        flex: 1 0 auto;
+    }
+
+    .notification-section{
+        height: 100%;
+        width: 80px;
+        @include styles.center;
+        // border : 1px solid white;
+        
+    }
+
+    .user-menu-section{
+        height: 100%;
+        width: 80px;
+        @include styles.center;
+        // border : 1px solid white;
+        
+    }
+
+    .language-section{
+        height: 100%;
+        width: 80px;
+        @include styles.center;
+        // border : 1px solid white;
+    }
+
+    div + div {
+        margin-left: 5px;
+    }
+
+
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calendar-deployment
+spec:
+  selector:
+    matchLabels:
+      app: calendar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: calendar
+    spec:
+      imagePullSecrets:
+        - name: calendar-registry-key
+      containers:
+        - name: calendar
+          image: 365583262659.dkr.ecr.eu-west-3.amazonaws.com/calendar-repo:latest
+          ports:
+            - containerPort: 8005
+          env:
+            - name: PROFILE
+              value: prod
+            - name: LOG_PATH
+              value: /app/logs
+            - name: LOGSTASH_HOST
+              value: logstash
+            - name: LOGSTASH_PORT
+              value: "9999"
+            - name: SBADMIN_URL
+              value: http://sbadmin:9090
+            - name: EUREKA_DISCOVERY
+              value: http://eureka:8761
+            - name: ENABLE_EUREKA
+              value: "true"
+            - name: ENABLE_KUBERNETES
+              value: "false"
+            - name: ENABLE_KUBERNETES_DISCOVERY
+              value: "false"
+            - name: MYSQL
+              value: mysql:3306
+            - name: DB_NAME
+              value: calendar
+            - name: DB_USERNAME
+              value: root
+            - name: DB_PASSWORD
+              value: rootroot
+            - name: KEYCLOAK
+              value: http://keycloak:8180
+            - name: REALM_NAME
+              value: add
+            - name: REALM_CLIENT
+              value: addClient
+            - name: KEYCLOAK_SECRET
+              value: 8ya7tuJnY74935tgbI1YwBDcejYSNfRD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calendar
+spec:
+  selector:
+    app: calendar
+  ports:
+    - name: http
+      port: 8005
+      protocol: TCP
+      targetPort: 8005

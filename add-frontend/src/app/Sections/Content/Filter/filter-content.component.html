@@ -1,0 +1,37 @@
+
+<form [formGroup]="form" novalidate>
+    <h2 mat-dialog-title>Filters</h2>
+    <hr>
+    <mat-dialog-content class="content">
+        <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput formControlName="date" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state">
+                <mat-option value="Accepted">Accepted</mat-option>
+                <mat-option value="Refused">Refused</mat-option>
+                <mat-option value="Pending">Pending</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Extension</mat-label>
+            <mat-select formControlName="ext">
+                <mat-option *ngFor="let extension of extensions()" [value]="extension">{{extension}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button [disabled]="!form.valid" color="primary" (click)="filter()">
+            <mat-icon>filter_list</mat-icon>
+            Filter
+        </button>
+        <button mat-raised-button mat-dialog-close color="warn">
+            <mat-icon>cancel</mat-icon>
+            Close
+        </button>
+    </mat-dialog-actions>
+</form>

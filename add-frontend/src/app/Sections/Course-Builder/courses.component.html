@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="header">
+        <div class="section title">
+            <h3>Courses</h3>
+        </div>
+        <div class="section header-actions">
+            <button [color]="filtersApplied && 'primary'" mat-raised-button (click)="openFilterCoursesDialog()">
+                Filter
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            <button mat-raised-button (click)="openAddDialog()">
+                New Course
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="body">
+        <div class="list" *ngIf="(courses$ | async)?.length">
+            <div class="course" *ngFor="let course of (courses$ | async)">
+                <div class="head">
+                    <div class="title">
+                        <b>{{course.title}} </b>
+                    </div>
+                    <div class="actions">
+                        <button *ngIf="course.state === 'Draft'" color="primary" mat-raised-button
+                            matTooltip="Build course" (click)="navigateToCourse(course.id)">
+                            <mat-icon>build</mat-icon>
+                        </button>
+
+                        <button *ngIf="course.state === 'Archived'" color="warn" mat-raised-button
+                            matTooltip="unarchive">
+                            <mat-icon>restore_from_trash</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="banner">
+                    <img [src]="getSafeImageUrl(course.imageData)">
+                </div>
+                <div class="info">
+                    <small><b>summary:</b></small><br>
+                    <small>{{course.summary}}</small>
+                </div>
+                <div class="footer">
+                    <small><b>Modified at:</b> {{course.lastModifiedDate}} </small>
+                </div>
+            </div>
+        </div>
+        <div class="empty-list" *ngIf="!(courses$ | async)?.length">
+            <mat-icon>book</mat-icon>
+            <h2>There is no courses to load</h2>
+        </div>
+        <div class="paginator">
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="query.total" [pageSize]="query.sizePage"
+                (page)="pageChanged($event)" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</div>

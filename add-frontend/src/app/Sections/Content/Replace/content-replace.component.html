@@ -1,0 +1,41 @@
+<form [formGroup]="form" novalidate>
+    <h2 mat-dialog-title>Replace content</h2>
+    <hr>
+    <mat-dialog-content class="content">
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+            <mat-error *ngIf="check('title','required')" >title required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="5" formControlName="description"></textarea>
+            <mat-error *ngIf="check('description','required')" >description required</mat-error>
+        </mat-form-field>
+        <div class="form-field file-section">
+            <button mat-raised-button matTooltip="add video" (click)="FileUpload.click()">
+                <mat-icon>add_circle_outline</mat-icon>
+                Select content *
+            </button>
+            <input  type="file" hidden #FileUpload 
+                    accept="{{accept()}}"
+                    (change)="onFileUploadSelected($event)">
+            <mat-chip-list class="file">
+                <mat-chip *ngIf="file" [removable]="true" (removed)="onFileUploadUnselect()" >
+                    {{file.name}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+        </button>
+        <button mat-raised-button [disabled]="!form.valid" color="primary" (click)="replace()">
+            <mat-icon>loop</mat-icon>
+            Replace
+        </button>
+    </mat-dialog-actions>
+</form>

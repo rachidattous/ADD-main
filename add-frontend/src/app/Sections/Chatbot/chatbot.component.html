@@ -1,0 +1,28 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="chatbot-header-section">
+            <div class="image">
+                <img src="assets/chatbot.png" alt="">
+            </div>
+            <div class="title">
+                Support Chatbot
+            </div>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="chatbot-discussion">
+      <div class="discussion">
+
+      </div>
+      <mat-divider></mat-divider>
+      <div class="message-section">
+            <mat-form-field appearance="outline">
+                <input matInput type="text" placeholder="write message" [(ngModel)]="message">
+                <button mat-button matSuffix mat-icon-button>
+                    <mat-icon>send</mat-icon>
+                </button>
+            </mat-form-field>
+      </div>
+    </div>
+</mat-expansion-panel>

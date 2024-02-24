@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="header">
+        <div class="section title">
+            <h3>Roles</h3>
+        </div>
+        <div class="section header-actions">
+            <button mat-raised-button matTooltip="new role" (click)="openAddDialog()">
+                Add
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <!-- <button mat-raised-button (click)="openFilterRolesDialog()">
+                Filter
+                <mat-icon>filter_list</mat-icon>
+            </button> -->
+            <button mat-raised-button matTooltip="upload users" (click)="FileUpload.click()">
+                Import
+                <mat-icon>cloud_upload</mat-icon>
+            </button>
+            <input  type="file" hidden #FileUpload 
+                    accept="application/vnd.ms-excel"
+                    (change)="onFileUploadSelected($event)">
+
+            <button mat-raised-button matTooltip="download roles" (click)="exportRoles()">
+                Export
+                <mat-icon>cloud_download</mat-icon>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="body">
+        <div class=" table mat-elevation-z8">
+            <table mat-table [dataSource]="table_data">
+                <ng-container matColumnDef="role">
+                    <th mat-header-cell *matHeaderCellDef>Role</th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="permissions">
+                    <th mat-header-cell *matHeaderCellDef>Permissions</th>
+                    <td class="permission-container" mat-cell *matCellDef="let element"> 
+                        <div class="permission" *ngFor="let permission of element.permissions">
+                            {{permission.permission}}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button  mat-button matTooltip="Duplicate">
+                            <mat-icon>control_point_duplicate</mat-icon>
+                        </button>
+                        <button  mat-button matTooltip="Update" (click)="openUpdateDialog(element)">
+                            <mat-icon>update</mat-icon>
+                        </button>
+                        <button  mat-button matTooltip="Delete" (click)="openDeleteDialog(element.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columns; sticky:true"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns;" class="row"></tr>
+           </table>
+           <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    [length]="total"
+                    [pageSize]="sizePage"
+                    (page)="pageChanged($event)"
+                    showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</div>

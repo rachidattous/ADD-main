@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="header">
+        <div class="section title">
+            <h3>Audios</h3>
+        </div>
+        <div class="section header-actions">
+            <div class="search-wrapper">
+                <input  class="search" 
+                        matInput [matAutocomplete]="auto" 
+                        placeholder="search" 
+                        [(ngModel)]="searchText"
+                        (input)="loadSuggestions()">
+                <button class="search-btn" mat-icon-button (click)="search()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion" (click)="setSearchText(suggestion)">
+                    {{suggestion}}
+                </mat-option>
+            </mat-autocomplete>
+            <button [color]="filtersApplied && 'primary'" mat-raised-button matTooltip="filter files" (click)="openFilterDialog()">
+                Filter
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            <button mat-raised-button matTooltip="add audio" (click)="openAddAudioDialog()">
+                Add
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+        </div>
+    </div>
+    <hr />
+    <div class="body">
+        <div class="courses-list-wrapper" *ngIf="(audios$ | async)?.length">
+            <mat-card [ngClass]="'file-wrapper '+ state(audio.state)"  *ngFor="let audio of audios$ | async">
+                <div class="header">
+                    <div class="title">
+                        <span class="filename">{{audio.originalFileName}}</span>
+                        <span class="date">{{audio.uploadDate}}</span>
+                    </div>
+                    <button mat-icon-button matTooltip="info" (click)="openInfoAudioDialog(audio)">
+                        <mat-icon>info</mat-icon>
+                    </button>
+                </div>
+              <img class="file" mat-card-image src="{{chooseIcon(audio.ext)}}" alt="">
+              <mat-card-content>
+                Author
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button matTooltip="download audio" (click)="openDisplayAudioDialog(audio)">
+                    <mat-icon>play_circle_outline</mat-icon>
+                </button>
+                <button *ngIf="canEvaluateContent" mat-button matTooltip="evaluate audio" (click)="openEvaluationDialog(audio)">
+                    <mat-icon>assignment_turned_in</mat-icon>
+                </button>
+                <button mat-button matTooltip="delete audio" (click)="openDeleteDialog(audio.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <button *ngIf="canReplaceContent" mat-button matTooltip="replace document" (click)="openReplaceDialog(audio)">
+                    <mat-icon>loop</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
+        </div>
+        <div class="empty-list" *ngIf="!(audios$ | async)?.length">
+            <mat-icon>audiotrack</mat-icon>
+            <h2>There is no audios to load</h2>
+        </div>
+        <div class="paginator-wrapper">
+            <mat-paginator 
+                [pageSizeOptions]="[5, 10, 20]"
+                [length]="query.total"
+                [pageSize]="query.sizePage"
+                (page)="pageChanged($event)"
+                showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</div>
+

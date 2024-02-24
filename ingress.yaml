@@ -1,0 +1,61 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: add-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth
+                port:
+                  number: 8000
+          - path: /api/course
+            pathType: Prefix
+            backend:
+              service:
+                name: course
+                port:
+                  number: 8007
+          - path: /api/eureka
+            pathType: Prefix
+            backend:
+              service:
+                name: eureka
+                port:
+                  number: 8761
+          - path: /api/notifications
+            pathType: Prefix
+            backend:
+              service:
+                name: notification
+                port:
+                  number: 8001    
+          - path: /api/file
+            pathType: Prefix
+            backend:
+              service:
+                name: file
+                port:
+                  number: 8003
+          - path: /api/search
+            pathType: Prefix
+            backend:
+              service:
+                name: search
+                port:
+                  number: 8002
+          

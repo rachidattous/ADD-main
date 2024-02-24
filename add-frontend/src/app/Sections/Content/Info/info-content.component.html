@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Info</h2>
+<hr>
+<mat-dialog-content class="content">
+    <div class="info-section">
+        <table>
+            <tr>
+                <th>Reference</th>
+                <td>{{content.id}}</td>
+            </tr>
+            <tr>
+                <th>content name</th>
+                <td>{{content.originalFileName}}</td>
+            </tr>
+            <tr>
+                <th>Creation Date</th>
+                <td>{{content.uploadDate}}</td>
+            </tr>
+            <tr>
+                <th>Extension</th>
+                <td>{{content.ext}}</td>
+            </tr>
+            <tr>
+                <th> Author</th>
+                <td>{{content.userId}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="info-section">
+        <table>
+            <tr>
+                <th>Validation Date</th>
+                <th>Validator</th>
+                <th>State</th>
+            </tr>
+            <tr *ngFor="let validation of content.validations">
+                <td>{{validation.date + ' ' + validation.time}}</td>
+                <td>{{validation.userId}}</td>
+                <td [ngClass]="state(validation.validationType)">{{validation.validationType}}</td>
+            </tr>
+        </table>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close color="warn">
+        <mat-icon>cancel</mat-icon>
+        Close
+    </button>
+</mat-dialog-actions>

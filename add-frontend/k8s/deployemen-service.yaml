@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+      - name: frontend-registry-key
+      containers:
+      - name: frontend-v1
+        image: 365583262659.dkr.ecr.eu-west-3.amazonaws.com/frontend-repo:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-conf-volume
+          mountPath: /etc/nginx/conf.d/
+      volumes:
+      - name: nginx-conf-volume
+        configMap:
+          name: nginx-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  # type: LoadBalancer

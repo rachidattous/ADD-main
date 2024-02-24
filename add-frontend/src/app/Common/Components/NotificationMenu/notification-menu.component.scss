@@ -1,0 +1,85 @@
+.notifications {
+    position: absolute;
+    background-color: white;
+    color: black;
+    right: 200px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+    padding-bottom: 10px;
+    z-index: 999;
+    
+    .notif-header {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px;
+        box-sizing: border-box;
+        border-bottom: .5px solid black;
+    }
+
+    .notif-body {
+
+        max-height: 400px; 
+        min-height: 400px;
+        width: 500px;
+        overflow-y: auto;
+
+        .notif-element {
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: .5px solid black;
+            padding: 5px;
+            box-sizing: border-box;
+            cursor: pointer;
+            
+
+            .notif-content {
+                height: 100%;
+                width: calc(100% - 80px);
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+
+
+            .notif-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 80px;
+            }
+        }
+
+        .notif-read {
+            background-color: white;
+        }
+
+        .notif-not-read {
+            background-color: rgba(211, 238, 255, 0.308);
+        }
+
+        .notif-load-more {
+            display: flex;
+            justify-content: center;
+
+            button {
+                width: 100%;
+            }
+        }
+
+    }
+
+    .empty-body {
+        height: 400px;
+        width: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}

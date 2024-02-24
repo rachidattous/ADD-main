@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="user-info-section">
+        <div class="image">
+            <img [src]="url" alt="profile photo">
+        </div>
+        <div class="user-info" *ngIf="info$ | async as user">
+            {{user.firstName + ' ' + user.lastName}}
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="services">
+        <app-sidebar-menu></app-sidebar-menu>
+    </div>
+    <mat-divider></mat-divider>
+    <app-chatbot></app-chatbot>
+</div>

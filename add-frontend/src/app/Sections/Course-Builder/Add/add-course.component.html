@@ -1,0 +1,40 @@
+<form [formGroup]="form" novalidate>
+    <h2 mat-dialog-title>Add New Course</h2>
+    <mat-dialog-content class="content">
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title"  />
+            <mat-error *ngIf="check('title','required')" >title required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Summary</mat-label>
+            <textarea matInput rows="5" formControlName="summary"></textarea>
+            <mat-error *ngIf="check('summary','required')" >summary required</mat-error>
+        </mat-form-field>
+        <div class="form-field file-section">
+            <button mat-raised-button matTooltip="add content" (click)="FileUpload.click()">
+                <mat-icon>add_circle_outline</mat-icon>
+                Course Image *
+            </button>
+            <input  type="file" hidden #FileUpload 
+                    accept="image/*"
+                    (change)="select($event)">
+            <mat-chip-list class="file">
+                <mat-chip *ngIf="image" [removable]="true" (removed)="unselect()" >
+                    {{image.name}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+        </button>
+        <button mat-raised-button [disabled]="!this.form.valid" color="primary" (click)="add()">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
+        </button>
+    </mat-dialog-actions>
+</form>

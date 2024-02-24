@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="toggle-section" *ngIf="(isAuthenticated$ | async)">
+        <button mat-button (click)="toggle()" matTooltip="Toggle menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div class="logo-section" *ngIf="(isAuthenticated$ | async)">
+        
+    </div>
+    <div class="empty-section">
+        
+    </div>
+    <div class="notification-section" *ngIf="(isAuthenticated$ | async)">
+    <!-- <div class="notification-section"> -->
+            <app-notification-menu></app-notification-menu>
+    </div>
+    <div class="user-menu-section" *ngIf="(isAuthenticated$ | async)">
+        <button mat-button [matMenuTriggerFor]="userMenu" matTooltip="user menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu" xPosition="before">
+            <button mat-menu-item *ngFor="let item of userMoreMenu" (click)="navigate(item.link)">
+                <mat-icon>{{item.icon}}</mat-icon>
+                {{item.text}}
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Logout
+            </button>
+        </mat-menu>
+    </div>
+    <div class="language-section">
+        <button class="lang-menu-btn" mat-button [matMenuTriggerFor]="langMenu" matTooltip="Select language">
+            <img class="icon" [src]="(language$ | async)?.icon" />
+        </button>
+        <mat-menu #langMenu="matMenu" xPosition="before">
+            <button class="menu-item" mat-menu-item *ngFor="let lang of languages" (click)="selectLanguage(lang)">
+                <img class="icon" src={{lang.icon}} />
+                {{lang.text}}
+            </button>
+        </mat-menu>
+    </div>
+</div>

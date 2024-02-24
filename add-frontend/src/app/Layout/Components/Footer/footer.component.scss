@@ -1,0 +1,11 @@
+@use '../../../../styles.scss';
+
+.container {
+    height: 80px;
+    width: 100%;
+    background-color: styles.$COLOR;
+    @include styles.center;
+    text-align: center;
+    color: black;
+    border-top: 1px #b7b7b7 solid;
+}

@@ -1,0 +1,16 @@
+.content {
+    width: 600px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    .form-field {
+        padding: 0px 25px 0px;
+    }
+
+    .radio-elem + .radio-elem {
+        margin-left: 10px;
+    }
+
+}

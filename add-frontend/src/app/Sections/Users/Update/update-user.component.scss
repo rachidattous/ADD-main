@@ -1,0 +1,22 @@
+.content {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+
+    .group {
+        display: flex;
+        gap: 10px;
+
+        .mat-form-field {
+            width: 50%;
+        }
+    }
+
+    .image-section {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+}

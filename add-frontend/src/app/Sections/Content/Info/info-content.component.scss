@@ -1,0 +1,40 @@
+.content {
+    width: 600px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap : 10px;
+
+    .info-section {
+        width: 100%;
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .ok {
+            padding: 2px;
+            background-color: #ddead1;
+        }
+
+        .refused {
+            padding: 2px;
+            background-color: #ffc9bb;
+        }
+
+        .inprogress {
+            padding: 2px;
+            background-color: #dbecf4;;
+        }
+    }
+
+}

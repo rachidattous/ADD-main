@@ -1,0 +1,83 @@
+def gv
+
+pipeline {
+    agent any
+
+    environment {
+        microserviceName = "auth"
+        ecrRepository = "auth-repo"
+        region = "eu-west-3"
+        imageTag = "latest"
+        deploymentName = "auth-deployment"
+    }
+
+    stages {
+
+        stage("init") {
+            steps {
+                script {
+                    gv = load "script.groovy"
+                }
+            }
+        }
+        stage('Test Spring boot project') {
+            steps {
+                echo 'we skip the test for the moment'
+            }
+        }
+        stage('Build Jar') {
+            steps {
+                script{
+                    gv.BuildJar(microserviceName)
+                }
+            }
+        }
+        
+        stage('Build Docker image') {
+            steps {
+                script{
+                    gv.BuildDockerImage(ecrRepository,microserviceName)
+                }
+            }
+        }
+        stage('ECR Login') {
+            steps {
+                script{
+                    gv.EcrLogin()
+                }
+            }
+        }
+
+        stage('Create or Check ECR Repository') {
+            steps {
+                script {
+                    gv.CreateOrCheckECRRepository(ecrRepository, region)
+                }
+            }
+        }
+
+        stage('Reset Docker Image on ECR') {
+            steps {
+                script{
+                    gv.ResetDockerImageOnECR(ecrRepository, imageTag)
+                }
+            }
+        }
+        
+        stage("Reset Deployment"){
+            steps {
+                script {
+                    gv.ResetDeployment(deploymentName)
+                }
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                script{
+                    gv.DeployEKS()
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,89 @@
+<form [formGroup]="userForm" novalidate>
+
+    <h2 mat-dialog-title>Add user</h2>
+
+    <mat-dialog-content class="content">
+        <div class="group">
+            <mat-form-field appearance="outline">
+                <mat-label>Firstname</mat-label>
+                <input matInput formControlName="firstName">
+                <mat-error *ngIf="check('firstName','required')" >firstname required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Lastname</mat-label>
+                <input matInput formControlName="lastName">
+                <mat-error *ngIf="check('lastName','required')" >lastname required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="group">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email">
+                <mat-error *ngIf="check('email','required')" >email required</mat-error>
+                <mat-error *ngIf="check('email','email')" >email not valid</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>BirthDate</mat-label>
+                <input matInput [matDatepickerFilter]="filterAge" formControlName="birthDate" [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="check('birthDate','required')" >birthdate required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="group">
+            <mat-form-field appearance="outline">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username">
+                <mat-error *ngIf="check('username','required')" >username required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                    <mat-option [value]="'Male'">Male</mat-option>
+                    <mat-option [value]="'Female'">Female</mat-option>
+                </mat-select>
+                <mat-error *ngIf="check('gender','required')" >gender required</mat-error>
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password">
+                <mat-error *ngIf="check('password','required')" >password required</mat-error>
+                <mat-error *ngIf="check('password','minlength')" >minimum 8 characters</mat-error>
+            </mat-form-field> -->
+        </div>
+        <div class="group">
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="rolesName" multiple>
+                    <mat-select-trigger>
+                      <mat-chip-list>
+                        <mat-chip *ngFor="let role of sliceRoles()"
+                          [removable]="true" (removed)="onRoleRemoved(role)">
+                          {{ role }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <mat-chip *ngIf="userForm.value.rolesName.length > 1">
+                          + {{ userForm.value.rolesName.length - 1 }}
+                        </mat-chip>
+                      </mat-chip-list>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="check('rolesName','required')" >role required</mat-error>
+            </mat-form-field>
+        </div>
+        
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close color="warn">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+        </button>
+        <button mat-raised-button [disabled]="!userForm.valid" color="primary" (click)="add()">
+            <mat-icon>add_circle_outline</mat-icon>
+            Add
+        </button>
+    </mat-dialog-actions>
+
+</form>

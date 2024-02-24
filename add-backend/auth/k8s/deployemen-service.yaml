@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  selector:
+    matchLabels:
+      app: auth
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      imagePullSecrets:
+      - name: auth-registry-key
+      containers:
+      - name: auth
+        image: 365583262659.dkr.ecr.eu-west-3.amazonaws.com/auth-repo:latest
+        ports:
+        - containerPort: 8000
+        env:
+          - name: PROFILE
+            value: "prod"
+          - name: LOG_PATH
+            value: "/app/logs"
+          - name: LOGSTASH_HOST
+            value: "logstash"
+          - name: LOGSTASH_PORT
+            value: "9999"
+          - name: SBADMIN_URL
+            value: "http://sbadmin:9090"
+          - name: MYSQL
+            value: "mysql:3306"
+          - name: DB_NAME
+            value: "auth"
+          - name: DB_USERNAME
+            value: "root"
+          - name: DB_PASSWORD 
+            value: "rootroot"
+          - name: KEYCLOAK 
+            value: "http://keycloak:8180"
+          - name: REALM_NAME
+            value: "add"
+          - name: REALM_CLIENT
+            value: "addClient"
+          - name: KEYCLOAK_SECRET
+            value: "5d7313b6-55e7-46ad-84b8-38f5e176d554"
+          - name: EUREKA_DISCOVERY
+            value: http://eureka:8761
+          - name: ENABLE_EUREKA
+            value: "true"
+          - name: ENABLE_KUBERNETES
+            value: "false"
+          - name: ENABLE_KUBERNETES_DISCOVERY
+            value: "false"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  selector:
+    app: auth
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
